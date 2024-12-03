@@ -22,8 +22,20 @@ pub fn is_nice(good_deeds: u32, bad_deeds: u32) -> bool {
     ratio >= 0.75
 }
 
-fn main() {
-    let test_bool = is_nice(10, 2);
-    println!("test bool is equal to: {}", test_bool);
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn both_zero() {
+        let result = is_nice(0, 0);
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn not_nice() {
+        let result = is_nice(10, 2);
+        assert_eq!(result, false);
+    }
 }
 
