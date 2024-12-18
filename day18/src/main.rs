@@ -15,7 +15,7 @@ pub struct SleighBuilder {
 }
 
 impl SleighBuilder {
-    fn new() -> SleighBuilder {
+    pub fn new() -> SleighBuilder {
         SleighBuilder {
             color: String::from("red"),
             engine: String::from("reindeer-powered"),
@@ -34,22 +34,22 @@ impl SleighBuilder {
         self
     }
 
-    pub fn gift_capacity (mut self, capacity: u32) -> Self {
+    pub fn gift_capacity(mut self, capacity: u32) -> Self {
         self.gift_capacity = capacity;
         self
     }
 
-    pub fn magical_enhancements (mut self) -> Self {
-        self.magical_enhancements  = true;
+    pub fn magical_enhancements(mut self) -> Self {
+        self.magical_enhancements = true;
         self
     }
 
-    pub fn build(&self) -> Sleigh {
+    pub fn build(self) -> Sleigh {
         Sleigh {
-            color: self.color.clone(),
-            engine: self.engine.clone(),
+            color: self.color,
+            engine: self.engine,
             gift_capacity: self.gift_capacity,
-            magical_enhancements: self.magical_enhancements
+            magical_enhancements: self.magical_enhancements,
         }
     }
 }
@@ -72,8 +72,6 @@ impl Sleigh {
     pub fn magical_enhancements(&self) -> bool {
         self.magical_enhancements
     }
-
-
 }
 
 pub fn main() {
