@@ -1,8 +1,6 @@
-use rand::distributions::Alphanumeric;
-use rand::{thread_rng, Rng};
 use std::{fs::File, path::PathBuf};
 use std::fs::OpenOptions;
-use std::io::{BufWriter, Read, Seek, Write};
+use std::io::{BufWriter, Read, Write, ErrorKind};
 
 
 pub struct TempFile {
@@ -10,14 +8,20 @@ pub struct TempFile {
     file: File,
 }
 
+impl Drop for TempFile {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_file(&self.file_path);
+    }
+}
+
 impl TempFile {
     pub fn new() -> Result<Self, std::io::Error> {
         // Your code here...
-        let filename: String = thread_rng()
-            .sample_iter(&Alphanumeric)
-            .take(16)
-            .map(char::from)
-            .collect();
+        let filename = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_err(|_| ErrorKind::InvalidData)?
+        .as_nanos()
+        .to_string();
 
         let temp_dir = std::env::temp_dir();
         let file_path = temp_dir.join(filename);
